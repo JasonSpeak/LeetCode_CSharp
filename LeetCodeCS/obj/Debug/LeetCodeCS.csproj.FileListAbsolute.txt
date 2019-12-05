@@ -1,0 +1,7 @@
+C:\Users\lonwin\source\repos\LeetCodeCS\LeetCodeCS\bin\Debug\LeetCodeCS.exe.config
+C:\Users\lonwin\source\repos\LeetCodeCS\LeetCodeCS\bin\Debug\LeetCodeCS.exe
+C:\Users\lonwin\source\repos\LeetCodeCS\LeetCodeCS\bin\Debug\LeetCodeCS.pdb
+C:\Users\lonwin\source\repos\LeetCodeCS\LeetCodeCS\obj\Debug\LeetCodeCS.csprojAssemblyReference.cache
+C:\Users\lonwin\source\repos\LeetCodeCS\LeetCodeCS\obj\Debug\LeetCodeCS.csproj.CoreCompileInputs.cache
+C:\Users\lonwin\source\repos\LeetCodeCS\LeetCodeCS\obj\Debug\LeetCodeCS.exe
+C:\Users\lonwin\source\repos\LeetCodeCS\LeetCodeCS\obj\Debug\LeetCodeCS.pdb
