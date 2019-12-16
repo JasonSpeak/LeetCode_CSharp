@@ -4,8 +4,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using LeetCodeCS.DataStructure;
 
 namespace LeetCodeCS
 {
@@ -292,7 +294,7 @@ namespace LeetCodeCS
 
         #endregion
 
-        #region LeetCodeCN-66 Not Solved
+        #region LeetCodeCN-66
         //199
         //99
         //int.Max
@@ -321,6 +323,61 @@ namespace LeetCodeCS
 
                 return digits;
             }
+        }
+
+        #endregion
+
+        #region LeetCodeCN-107
+
+        public static IList<IList<int>> LevelOrderBottom(TreeNode root)
+        {
+            Queue<TreeNode> tempQueue = new Queue<TreeNode>();
+            IList<IList<int>> result = new List<IList<int>>();
+            if (root == null)
+                return result;
+            tempQueue.Enqueue(root);
+            while (tempQueue.Count!=0)
+            {
+                IList<int> currentLevel = new List<int>();
+                int n = tempQueue.Count;
+                for (int i = 0; i < n; i++)
+                {
+                    TreeNode node = tempQueue.Dequeue();
+                    currentLevel.Add(node.val);
+                    if(node.left!=null)
+                        tempQueue.Enqueue(node.left);
+                    if (node.right != null)
+                        tempQueue.Enqueue(node.right);
+                }
+                result.Add(currentLevel);
+            }
+
+            result = result.Reverse().ToList();
+            return result;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-108
+
+        public static TreeNode SortedArrayToBST(int[] nums)
+        {
+            if (nums == null || nums.Length == 0)
+                return null;
+            return CreateTree(nums, 0, nums.Length - 1);
+        }
+
+        private static TreeNode CreateTree(int[] nums, int start, int end)
+        {
+            if (start > end)
+            {
+                return null;
+            }
+            int mid = (start + end) / 2;
+            TreeNode root = new TreeNode(nums[mid]);
+            root.left = CreateTree(nums, start, mid - 1);
+            root.right = CreateTree(nums, mid + 1, end);
+            return root;
         }
 
         #endregion
