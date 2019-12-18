@@ -16,10 +16,9 @@ namespace LeetCodeCS
         public static void Main(string[] args)
         {
 
-            int[] nums = {1, 3, 5, 6};
-            int target = 7;
-
-            Console.WriteLine($"res is {CountAndSay(4)}");
+            var prices = new []{ 7, 6, 4, 3, 1 };
+            var result = MaxProfit(prices);
+            Console.WriteLine(result);
             Console.ReadLine();
         }
 
@@ -381,5 +380,175 @@ namespace LeetCodeCS
         }
 
         #endregion
+
+        #region LeetCodeCN-110
+
+        public static bool IsBalanced(TreeNode root)
+        {
+            if (root == null)
+                return true;
+            return Depth(root) != -1;
+        }
+
+        private static int Depth(TreeNode root)
+        {
+            if (root == null)
+                return 0;
+            int left = Depth(root.left);
+            if (left == -1)
+                return -1;
+            int right = Depth(root.right);
+            if (right == -1)
+                return -1;
+            return Math.Abs(left - right) < 2 ? Math.Max(left, right) + 1 : -1;
+        }
+        #endregion
+
+        #region LeetCodeCN-111
+
+        public static int MinDepth(TreeNode root)
+        {
+            if (root == null)
+                return 0;
+            int left = MinDepth(root.left);
+            int right = MinDepth(root.right);
+            return (root.left == null || root.right == null) ? left + right + 1 : Math.Min(left, right) + 1;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-112
+
+        public static bool HasPathSum(TreeNode root, int sum)
+        {
+            if (root == null)
+                return false;
+            if (root.left == null && root.right == null && sum - root.val == 0)
+                return true;
+            return HasPathSum(root.left, sum - root.val) || HasPathSum(root.right, sum - root.val);
+        }
+
+        #endregion
+
+        #region LeetCodeCN-118
+
+        public static IList<IList<int>> Generate(int numRows)
+        {
+            if (numRows == 0)
+            {
+                return new List<IList<int>>();
+            }
+
+            if (numRows == 1)
+            {
+                return new List<IList<int>>(){new List<int>(){1}};
+            }
+
+            if (numRows == 2)
+            {
+                return new List<IList<int>>() { new List<int>() { 1 },new List<int>(){1,1} };
+            }
+
+            List<IList<int>> result = new List<IList<int>>() { new List<int>() { 1 }, new List<int>() { 1, 1 } };
+            for (var i = 2; i < numRows; i++)
+            {
+                IList<int> tempLevel = new List<int>();
+                tempLevel.Add(1);
+                for (int j = 1; j < i; j++)
+                {
+                    tempLevel.Add(result[i - 1][j - 1] + result[i - 1][j]);
+                }
+
+                tempLevel.Add(1);
+                result.Add(tempLevel);
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-119
+
+        public static IList<int> GetRow(int rowIndex)
+        {
+            if (rowIndex == 0)
+            {
+                return new List<int>() { 1 };
+            }
+
+            if (rowIndex == 1)
+            {
+                return new List<int>() { 1, 1 };
+            }
+
+            List<int> preLevel = new List<int>() { 1, 1 };
+            List<int> currentLevel = new List<int>();
+            for (int i = 2; i < rowIndex + 1; i++)
+            {
+                currentLevel = new List<int>();
+                currentLevel.Add(1);
+                for (int j = 1; j < i; j++)
+                {
+                    currentLevel.Add(preLevel[j - 1] + preLevel[j]);
+                }
+                currentLevel.Add(1);
+                preLevel = new List<int>(currentLevel);
+            }
+
+            return currentLevel;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-121
+
+        public static int MaxProfit(int[] prices)
+        {
+            #region 暴力枚举 O(N^2)
+
+            //int maxProfit = 0;
+            //int tempMax = 0;
+            //int currentDay = 0;
+            //while (currentDay<prices.Length)
+            //{
+            //    for (int i = currentDay; i < prices.Length; i++)
+            //    {
+            //        int currentMax = prices[i] - prices[currentDay];
+            //        tempMax = tempMax > currentMax ? tempMax : currentMax;
+            //    }
+
+            //    maxProfit = maxProfit > tempMax ? maxProfit : tempMax;
+            //    tempMax = 0;
+            //    currentDay++;
+            //}
+            //return maxProfit;
+
+            #endregion
+
+            #region 优化枚举一趟 O(N)
+
+            if (prices.Length < 2)
+            {
+                return 0;
+            }
+
+            int maxProfit = 0;
+            int currentMin = prices[0];
+
+            for (int i = 1; i < prices.Length; i++)
+            {
+                maxProfit = maxProfit > prices[i] - currentMin ? maxProfit : prices[i] - currentMin;
+                currentMin = currentMin < prices[i] ? currentMin : prices[i];
+            }
+
+            return maxProfit;
+
+            #endregion
+
+        }
+
+        #endregion
+
     }
 }

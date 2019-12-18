@@ -5,3 +5,9 @@ C:\Users\lonwin\source\repos\LeetCodeCS\LeetCodeCS\obj\Debug\LeetCodeCS.csprojAs
 C:\Users\lonwin\source\repos\LeetCodeCS\LeetCodeCS\obj\Debug\LeetCodeCS.csproj.CoreCompileInputs.cache
 C:\Users\lonwin\source\repos\LeetCodeCS\LeetCodeCS\obj\Debug\LeetCodeCS.exe
 C:\Users\lonwin\source\repos\LeetCodeCS\LeetCodeCS\obj\Debug\LeetCodeCS.pdb
+D:\Google云盘\LeetCodeDiary\LeetCode_CSharp\LeetCodeCS\bin\Debug\LeetCodeCS.exe.config
+D:\Google云盘\LeetCodeDiary\LeetCode_CSharp\LeetCodeCS\bin\Debug\LeetCodeCS.exe
+D:\Google云盘\LeetCodeDiary\LeetCode_CSharp\LeetCodeCS\bin\Debug\LeetCodeCS.pdb
+D:\Google云盘\LeetCodeDiary\LeetCode_CSharp\LeetCodeCS\obj\Debug\LeetCodeCS.csprojAssemblyReference.cache
+D:\Google云盘\LeetCodeDiary\LeetCode_CSharp\LeetCodeCS\obj\Debug\LeetCodeCS.exe
+D:\Google云盘\LeetCodeDiary\LeetCode_CSharp\LeetCodeCS\obj\Debug\LeetCodeCS.pdb
