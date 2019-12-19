@@ -550,5 +550,26 @@ namespace LeetCodeCS
 
         #endregion
 
+        #region LeetCodeCN-122
+
+        public static int MaxProfit_122(int[] prices)
+        {
+            int n = prices.Length;
+            if (n == 0)
+                return 0;
+
+            int dp_i_0 = 0, dp_i_1 = int.MinValue;
+            for (int i = 0; i < n; i++)
+            {
+                int temp = dp_i_0;
+                dp_i_0 = Math.Max(dp_i_0, dp_i_1 + prices[i]);
+                dp_i_1 = Math.Max(dp_i_1, temp - prices[i]);
+            }
+
+            return dp_i_0;
+        }
+
+        #endregion
+
     }
 }
