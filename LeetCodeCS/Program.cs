@@ -1,13 +1,7 @@
-﻿using System;
+﻿using LeetCodeCS.DataStructure;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
-using LeetCodeCS.DataStructure;
 
 namespace LeetCodeCS
 {
@@ -16,8 +10,9 @@ namespace LeetCodeCS
         public static void Main(string[] args)
         {
 
-            var prices = new []{ 7, 6, 4, 3, 1 };
-            var result = MaxProfit(prices);
+            int[] nums = {2, 2, 1};
+
+            var result = SingleNumber(nums);
             Console.WriteLine(result);
             Console.ReadLine();
         }
@@ -554,20 +549,149 @@ namespace LeetCodeCS
 
         public static int MaxProfit_122(int[] prices)
         {
+            #region 优化版动态规划--只保存前次值
+
+            //int n = prices.Length;
+            //if (n == 0)
+            //    return 0;
+
+            //int dp_i_0 = 0, dp_i_1 = int.MinValue;
+            //for (int i = 0; i < n; i++)
+            //{
+            //    int temp = dp_i_0;
+            //    dp_i_0 = Math.Max(dp_i_0, dp_i_1 + prices[i]);
+            //    dp_i_1 = Math.Max(dp_i_1, temp - prices[i]);
+            //}
+
+            //return dp_i_0;
+
+            #endregion
+
+            #region 常规动态规划
+
             int n = prices.Length;
             if (n == 0)
-                return 0;
-
-            int dp_i_0 = 0, dp_i_1 = int.MinValue;
-            for (int i = 0; i < n; i++)
             {
-                int temp = dp_i_0;
-                dp_i_0 = Math.Max(dp_i_0, dp_i_1 + prices[i]);
-                dp_i_1 = Math.Max(dp_i_1, temp - prices[i]);
+                return 0;
             }
 
-            return dp_i_0;
+            var dp = new int[n,2];
+            dp[0, 0] = 0;
+            dp[0, 1] = -prices[0];
+            for (int i = 1; i < n; i++)
+            {
+                dp[i, 0] = Math.Max(dp[i - 1, 0], dp[i - 1, 1] + prices[i]);
+                dp[i, 1] = Math.Max(dp[i - 1, 1], dp[i - 1, 0] - prices[i]);
+            }
+
+            return dp[n - 1, 0];
+
+            #endregion
+
         }
+
+        #endregion
+
+        #region LeetCodeCN-125
+
+        public static bool IsPalindrome(string s)
+        {
+            int left = 0, right = s.Length-1;
+            while (left<=right)
+            {
+                if (!IsInRange(s[left]))
+                {
+                    left++;
+                    continue;
+                }
+
+                if (!IsInRange(s[right]))
+                {
+                    right--;
+                    continue;
+                }
+
+                if (s[left] != s[right] && !IsSameChar(s[left], s[right]))
+                {
+                    return false;
+                }
+
+                left++;
+                right--;
+            }
+
+            return true;
+        }
+
+        private static bool IsInRange(char c)
+        {
+            if ((c>=48&&c<=57)||(c>=65&&c<=90)||(c>=97&&c<=122))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private static bool IsSameChar(char a, char b)
+        {
+            if ((a >= 48 && a <= 57) || (b >= 48 && b <= 57))
+            {
+                return false;
+            }
+            return a > b ? a == (b + 32) : a == (b - 32);
+        }
+
+        #endregion
+
+        #region LeetCodeCN-136
+
+        public static int SingleNumber(int[] nums)
+        {
+            int result = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                result = result ^ nums[i];
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-141
+
+        public static bool HasCycle(ListNode head)
+        {
+            if (head?.Next == null)
+            {
+                return false;
+            }
+
+            ListNode point1 = head;
+            ListNode point2 = head.Next.Next;
+            while (true)
+            {
+                if (point1 == point2)
+                {
+                    return true;
+                }
+
+                if (point2?.Next == null)
+                {
+                    return false;
+                }
+
+                point1 = point1.Next;
+                point2 = point2.Next.Next;
+            }
+        }
+
+        #endregion
+
+        #region LeetCodeCN-155
+
+        
 
         #endregion
 
