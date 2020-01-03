@@ -1,7 +1,9 @@
 ﻿using LeetCodeCS.DataStructure;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace LeetCodeCS
 {
@@ -9,11 +11,9 @@ namespace LeetCodeCS
     {
         public static void Main(string[] args)
         {
-
-            int[] nums = {2, 2, 1};
-
-            var result = SingleNumber(nums);
-            Console.WriteLine(result);
+            int[] nums = {-1};
+            Rotate(nums, 2);
+            
             Console.ReadLine();
         }
 
@@ -51,16 +51,6 @@ namespace LeetCodeCS
 
         #region LeetCodeCN-21
         //Definition for singly-linked list.
-        public class ListNode
-        {
-            public int Val;
-            public ListNode Next;
-
-            public ListNode(int x)
-            {
-                Val = x;
-            }
-        }
 
         public static ListNode MergeTwoLists(ListNode l1, ListNode l2)
         {
@@ -691,9 +681,220 @@ namespace LeetCodeCS
 
         #region LeetCodeCN-155
 
-        
+        //外部类
 
         #endregion
 
+        #region LeetCodeCN-160
+
+        public static ListNode GetIntersectionNode(ListNode headA, ListNode headB)
+        {
+            if (headA == null || headB == null)
+            {
+                return null;
+            }
+            ListNode pA = headA;
+            ListNode pB = headB;
+            while (pA != pB)
+            {
+                pA = pA == null ? headB : pA.Next;
+                pB = pB == null ? headA : pB.Next;
+            }
+            return pA;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-168
+
+        public static string ConvertToTitle(int n)
+        {
+            //26进制转换
+            StringBuilder sb = new StringBuilder();
+            while (n > 0)
+            {
+                int c = n % 26;
+                if (c == 0)
+                {
+                    c = 26;
+                    n -= 1;
+                }
+                sb.Insert(0, (char)('A' + c - 1));
+                n /= 26;
+            }
+            return sb.ToString();
+        }
+
+        #endregion
+
+        #region LeetCodeCN-169
+
+        public static int MajorityElement(int[] nums)
+        {
+            #region 排序取中值
+
+            //Array.Sort(nums);
+            //return nums[(nums.Length - 1) / 2];
+
+            #endregion
+
+            #region 哈希表统计
+
+            //var map = new Hashtable();
+
+            //foreach (var num in nums)
+            //{
+            //    if (map.Count == 0 || !map.ContainsKey(num))
+            //    {
+            //        map.Add(num, 1);
+            //    }
+
+            //    map[num] = (int) map[num] + 1;
+            //}
+
+            //int count = 0;
+            //int max = int.MinValue;
+            //foreach (DictionaryEntry item in map)
+            //{
+            //    if ((int)item.Value >= count)
+            //    {
+            //        count = (int)item.Value;
+            //        max = (int)item.Key;
+            //    }
+            //}
+
+            //return max;
+
+            #endregion
+
+            #region 摩尔投票(Best)
+
+            int countFlag = 0;
+            int result = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                //初次默认第一个。后续每次判断当countFlag为0，意味着之前元素抵消完成。
+                if (countFlag == 0)
+                {
+                    //赋值新元素作为即将可能要返回的值
+                    result = nums[i];
+                }
+                // 即将可能返回的值给当前比，相等+1，不相等-1，累计为0重新赋值新坐标元素。
+                countFlag += (result == nums[i]) ? 1 : -1;
+            }
+            return result;
+
+            #endregion
+        }
+
+        #endregion
+
+        #region LeetCodeCN-171
+
+        public static int TitleToNumber(string s)
+        {
+             var baseMap = new Hashtable();
+             for (int i = 0; i < 26; i++)
+             {
+                 baseMap.Add((char)('A' + i), i + 1);
+             }
+
+             int result = 0;
+            for (int i = 0; i < s.Length; i++)
+            {
+                result += (int)Math.Pow(26, s.Length - 1 - i)*(int)baseMap[s[i]];
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-172
+
+        public static int TrailingZeroes(int n)
+        {
+            int fiveCount = 0;
+            while (n > 0)
+            {
+                fiveCount += n / 5;
+                n = n / 5;
+            }
+
+            return fiveCount;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-189
+
+        public static void Rotate(int[] nums, int k)
+        {
+            k %= nums.Length;
+            Console.WriteLine(k);
+            Reverse(nums, 0, nums.Length - 1);
+            Reverse(nums, 0, k - 1);
+            Reverse(nums, k, nums.Length - 1);
+        }
+
+        private static void Reverse(int[] nums, int index, int end)
+        {
+            while(index<end)
+            {
+                int temp = nums[index];
+                nums[index] = nums[end];
+                nums[end] = temp;
+                index++;
+                end--;
+            }
+        }
+
+        #endregion
+
+        #region LeetCodeCN-190
+
+        public static uint reverseBits(uint n)
+        {
+            int result = 0;
+            int count = 32;
+            while (count > 0)
+            {
+                result <<= 1;
+                result |= (int)(n & 1);
+                n >>= 1;
+                count--;
+            }
+
+            return (uint)result;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-191
+
+        public static int HammingWeight(uint n)
+        {
+            int count = 32;
+            int result = 0;
+            while (count > 0)
+            {
+                result += (int) (n & 1);
+                n >>= 1;
+                count--;
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-198
+
+        public static int Rob(int[] nums)
+        {
+
+        }
+
+        #endregion
     }
 }
