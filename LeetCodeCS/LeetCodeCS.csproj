@@ -46,6 +46,7 @@
     <Compile Include="DataStructures\ListNode.cs" />
     <Compile Include="DataStructures\TreeNode.cs" />
     <Compile Include="OutClass\MinStack-155.cs" />
+    <Compile Include="OutClass\MyStack-225.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

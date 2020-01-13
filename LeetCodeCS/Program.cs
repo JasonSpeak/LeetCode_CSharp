@@ -11,9 +11,10 @@ namespace LeetCodeCS
     {
         public static void Main(string[] args)
         {
-            int[] nums = {-1};
-            Rotate(nums, 2);
-            
+
+            var result = IsIsomorphic("foo", "bar");
+            Console.WriteLine(result);
+
             Console.ReadLine();
         }
 
@@ -892,8 +893,209 @@ namespace LeetCodeCS
 
         public static int Rob(int[] nums)
         {
+            if (nums.Length == 0)
+            {
+                return 0;
+            }
+            int[] dp = new int[nums.Length + 1];
+            dp[0] = 0;
+            dp[1] = nums[0];
+            for (int i = 2; i <= nums.Length; i++)
+            {
+                dp[i] = Math.Max(dp[i - 1], dp[i - 2] + nums[i - 1]);
+            }
+
+            return dp[nums.Length];
+        }
+
+        #endregion
+
+        #region LeetCodeCN-202
+
+        public static bool IsHappy(int n)
+        {
+            while (n >= 10)
+            {
+                int temp = 0;
+                while(n>0)
+                {
+                    temp += (int)Math.Pow(n % 10, 2);
+                    n = n / 10;
+                }
+                n = temp;
+            }
+
+            return n == 1 || n == 7;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-203
+        //关键在头尾节点的处理
+        public  static ListNode RemoveElements(ListNode head, int val)
+        {
+            //使用哨兵节点
+            ListNode sentinel = new ListNode(0);
+            sentinel.Next = head;
+
+            ListNode prev = sentinel, curr = head;
+            while (curr != null)
+            {
+                if (curr.Val == val) prev.Next = curr.Next;
+                else prev = curr;
+                curr = curr.Next;
+            }
+            return sentinel.Next;
+
 
         }
+
+        #endregion
+
+        #region LeetCodeCN-204
+
+        public static int CountPrimes(int n)
+        {
+            if (n < 2) return 0;
+            int count = 0;
+            // 元素设置标记
+            bool[] nums = new bool[n];
+
+            for (int i = 2; i * i < n; i++)
+            {
+                // 用 ! 判断，就不用循环遍历设置数组元素都为ture
+                if (!nums[i])
+                {
+
+                    for (int j = i * i; j < n; j += i)
+                    {
+
+                        // 判断是为了去重(i=2,j=12; i=3,j=12),提高效率
+                        if (nums[j])
+                            continue;
+
+                        // 这里递增，可以直接得到非质数的数量
+                        count++;
+
+                        // 非质数标记清除
+                        nums[j] = true;
+                    }
+                }
+            }
+            // 排除 0 和 1 ，所以要-2
+            return n - count - 2;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-205  
+
+        public static bool IsIsomorphic(string s, string t)
+        {
+            return Isomorphic(s, t) && Isomorphic(t, s);
+        }
+
+        private static bool Isomorphic(string s, string t)
+        {
+            var kv = new Hashtable();
+            int count = s.Length;
+            for (int i = 0; i < count; i++)
+            {
+                var cs = s[i];
+                var ts = t[i];
+                if (kv.ContainsKey(cs))
+                {
+                    if ((char) kv[cs] != ts)
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    kv.Add(cs, ts);
+                }
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-206
+
+        public static ListNode ReverseList(ListNode head)
+        {
+            ListNode pre = null;
+            ListNode cur = head;
+            ListNode tmp = null;
+
+            while (cur!=null)
+            {
+                tmp = cur.Next;
+                cur.Next = pre;
+                pre = cur;
+                cur = tmp;
+            }
+
+            return pre;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-217
+
+        public static bool ContainsDuplicate(int[] nums)
+        {
+            var kv = new Hashtable();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (kv.ContainsKey(nums[i]))
+                {
+                    return true;
+                }
+                kv.Add(nums[i],i);
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-219
+
+        public static bool ContainsNearbyDuplicate(int[] nums, int k)
+        {
+            if (nums.Length < 2)
+            {
+                return false;
+            }
+            var kv = new Hashtable();
+            int res = int.MaxValue;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (kv.ContainsKey(nums[i]))
+                {
+                    res = i - (int) kv[nums[i]];
+                    if (res <= k)
+                    {
+                        return true;
+                    }
+                    kv[nums[i]] = i;
+                }
+                else
+                {
+                    kv.Add(nums[i],i);
+                }
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-225
+
+        //Out Class
 
         #endregion
     }
