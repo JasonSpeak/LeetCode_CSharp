@@ -1098,5 +1098,144 @@ namespace LeetCodeCS
         //Out Class
 
         #endregion
+
+        #region LeetCodeCN-226 
+
+        public static TreeNode InvertTree(TreeNode root)
+        {
+            if (root == null)
+            {
+                return null;
+            }
+            TreeNode tmp = root.right;
+            root.right = root.left;
+            root.left = tmp;
+
+            InvertTree(root.right);
+            InvertTree(root.left);
+            return root;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-231
+
+        public static bool IsPowerOfTwo(int n)
+        {
+            return n > 0 && (n & (n - 1)) == 0;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-232
+
+        //Out Class
+
+        #endregion
+
+        #region LeetCodeCn-234
+
+        public static bool IsPalindrome(ListNode head)
+        {
+            #region 存入数组对比
+
+            //if (head == null || head.Next == null)
+            //{
+            //    return true;
+            //}
+
+            //List<int> tmp = new List<int>();
+            //var point = head;
+            //while (point!=null)
+            //{
+            //    tmp.Add(point.Val);
+            //    point = point.Next;
+            //}
+
+            //for (int i = 0; i < tmp.Count/2; i++)
+            //{
+            //    if (tmp[i] != tmp[tmp.Count - 1 - i])
+            //    {
+            //        return false;
+            //    }
+            //}
+
+            //return true;
+
+            #endregion
+
+            #region 双指针
+
+            if (head == null || head.Next == null)
+            {
+                return true;
+            }
+
+            var fast = head;
+            var slow = head;
+            ListNode mid = null;
+            while (fast != null && fast.Next != null)
+            {
+                fast = fast.Next.Next;
+                var tmp = mid;
+                mid = slow;
+                slow = slow.Next;
+                mid.Next = tmp;
+            }
+
+            ListNode left = null;
+            ListNode right = null;
+
+            if (fast == null)
+            {
+                right = slow;
+                left = mid;
+            }
+            else
+            {
+                right = slow.Next;
+                left = mid;
+            }
+
+            while (right!=null)
+            {
+                if (right.Val != left.Val)
+                {
+                    return false;
+                }
+                
+                right = right.Next;
+                left = left.Next;
+            }
+
+            return true;
+
+            #endregion
+        }
+
+        #endregion
+
+        #region LeetCodeCN-235
+
+        public static TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+        {
+            if (p.val < root.val && q.val < root.val)
+                return LowestCommonAncestor(root.left, p, q);
+            if (p.val > root.val && q.val > root.val)
+                return LowestCommonAncestor(root.right, p, q);
+            return root;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-237
+
+        public static void DeleteNode(ListNode node)
+        {
+            node.Val = node.Next.Val;
+            node.Next = node.Next.Next;
+        }
+
+        #endregion
     }
 }
