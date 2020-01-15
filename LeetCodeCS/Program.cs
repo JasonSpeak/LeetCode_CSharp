@@ -2,7 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 
 namespace LeetCodeCS
@@ -11,9 +13,8 @@ namespace LeetCodeCS
     {
         public static void Main(string[] args)
         {
-
-            var result = IsIsomorphic("foo", "bar");
-            Console.WriteLine(result);
+            int a = (int)Math.Pow(4, 15);
+            Console.WriteLine(a);
 
             Console.ReadLine();
         }
@@ -1234,6 +1235,355 @@ namespace LeetCodeCS
         {
             node.Val = node.Next.Val;
             node.Next = node.Next.Next;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-242
+
+        public static bool IsAnagram(string s, string t)
+        {
+            if (s.Length != t.Length)
+                return false;
+            int[] alpha = new int[26];
+            for (int i = 0; i < s.Length; i++)
+            {
+                alpha[s[i] - 'a']++;
+                alpha[t[i] - 'a']--;
+            }
+            for (int i = 0; i < 26; i++)
+                if (alpha[i] != 0)
+                    return false;
+            return true;
+
+        }
+
+        #endregion
+
+        #region LeetCodeCN-257
+
+        public static IList<string> BinaryTreePaths(TreeNode root)
+        {
+            IList<string> res = new List<string>();
+            ConstructPaths(root, "", res);
+            return res;
+        }
+
+        private static void ConstructPaths(TreeNode root, string path, IList<string> paths)
+        {
+            if (root != null)
+            {
+                path += root.val.ToString();
+                if (root.left==null&&root.right==null)
+                {
+                    paths.Add(path);
+                }
+                else
+                {
+                    path += "->";
+                    ConstructPaths(root.left,path,paths);
+                    ConstructPaths(root.right,path,paths);
+                }
+            }
+        }
+
+        #endregion
+
+        #region LeetCodeCN-258
+
+        public static int AddDigits(int num)
+        {
+            #region 循环解法
+
+            //while (num >= 10)
+            //{
+            //    int tmp = num;
+            //    int res = 0;
+            //    while (tmp>0)
+            //    {
+            //        res += tmp % 10;
+            //        tmp = tmp / 10;
+            //    }
+
+            //    num = res;
+            //}
+
+            //return num;
+
+            #endregion
+
+            #region 不使用循环递归，时间复杂度O(1),数学方法归纳
+
+            return (num - 1) % 9 + 1;
+
+            #endregion
+        }
+
+        #endregion
+
+        #region LeetCodeCN-263
+
+        public static bool IsUgly(int num)
+        {
+            if (num <= 0) return false;
+            while (num != 1)
+            {
+                if (num % 2 == 0) num /= 2;
+                else if (num % 3 == 0) num /= 3;
+                else if (num % 5 == 0) num /= 5;
+                else return false;
+            }
+            return true;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-268
+
+        public static int MissingNumber(int[] nums)
+        {
+            int[] flags = new int[nums.Length];
+
+            foreach (var t in nums)
+            {
+                flags[t] = 1;
+            }
+
+            for (int i = 0; i < flags.Length; i++)
+            {
+                if (flags[i] != 1)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-278
+
+        private static bool IsBadVersion(int version)
+        {
+            return false;
+        }
+
+        public static int FirstBadVersion(int n)
+        {
+            int left = 1;
+            int right = n;
+            while (left < right)
+            {
+                int mid = left + (right - left) / 2;
+                if (IsBadVersion(mid))
+                {
+                    right = mid;
+                }
+                else
+                {
+                    left = mid + 1;
+                }
+            }
+            return left;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-283
+
+        public static void MoveZeroes(int[] nums)
+        {
+            int notZeroPoint = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] != 0)
+                {
+                    nums[notZeroPoint] = nums[i];
+                    notZeroPoint++;
+                }
+            }
+
+            for (int j = notZeroPoint; j < nums.Length; j++)
+            {
+                nums[j] = 0;
+            }
+        }
+
+        #endregion
+
+        #region LeetCodeCN-290
+
+        public static bool WordPattern(string pattern, string str)
+        {
+            if (pattern.Length != str.Split(' ').Length)
+            {
+                return false;
+            }
+
+            return IsSameWord(pattern, str);
+        }
+
+        private static bool IsSameWord(string pattern, string str)
+        {
+            Hashtable kv = new Hashtable();
+            for (int i = 0; i < pattern.Length; i++)
+            {
+                var p = pattern[i];
+                var s = str.Split(' ')[i];
+                if (!kv.ContainsKey(p))
+                {
+                    if (kv.ContainsValue(s))
+                    {
+                        return false;
+                    }
+                    kv.Add(p, s);
+                }
+                else
+                {
+                    if ((string) kv[p] != s)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-292
+        public static bool CanWinNim(int n)
+        {
+            return (n % 4 != 0);
+        }
+
+
+        #endregion
+
+        #region LeetCodeCN-299
+
+        public static string GetHint(string secret, string guess)
+        {
+            int[] kv = new int[10];
+            int a = 0, b = 0;
+            for (int i = 0; i < secret.Length; i++)
+            {
+                if (secret[i] == guess[i])
+                {
+                    a++;
+                    continue;
+                }
+
+                //既不是公牛也不是母牛的数字最后出现次数为正
+                kv[secret[i] - '0']++;
+                kv[guess[i] - '0']--;
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                if (kv[i] >= 0)
+                {
+                    b += kv[i];//既不是公牛也不是母牛的数量
+                }
+            }
+
+            b = secret.Length - a - b;
+            return $"{a}A{b}B";
+        }
+
+        #endregion
+
+        #region LeetCodeCN-303
+
+        //Out Class
+
+        #endregion
+
+        #region LeetCodeCN-326
+
+        public static bool IsPowerOfThree(int n)
+        {
+            return n > 0 && 1162261467 % n == 0;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-342
+
+        public static bool IsPowerOfFour(int num)
+        {
+            return (num > 0) && ((num & (num - 1)) == 0) && (num % 3 == 1);
+        }
+
+        #endregion
+
+        #region LeetCodeCN-344
+
+        public static void ReverseString(char[] s)
+        {
+            int left = 0, right = s.Length-1;
+            while (left<=right)
+            {
+                char tmp = s[left];
+                s[left] = s[right];
+                s[right] = tmp;
+                left++;
+                right--;
+            }
+        }
+
+        #endregion
+
+        #region LeetCodeCN-345
+
+        public static string ReverseVowels(string s)
+        {
+            List<char> vowels = new List<char>()
+            {
+                'a',
+                'e',
+                'i',
+                'o',
+                'u',
+                'A',
+                'E',
+                'I',
+                'O',
+                'U'
+            };
+            StringBuilder res = new StringBuilder(s);
+            int left = 0, right = s.Length - 1;
+            while (left<=right)
+            {
+                if (!vowels.Contains(res[left]))
+                {
+                    left++;
+                    continue;
+                }
+
+                if (!vowels.Contains(res[right]))
+                {
+                    right--;
+                    continue;
+                }
+
+                var tmp = res[left];
+                res[left] = res[right];
+                res[right] = tmp;
+                left++;
+                right--;
+            }
+
+            return res.ToString();
+        }
+
+        #endregion
+
+        #region LeetCodeCN-349
+
+        public static int[] Intersection(int[] nums1, int[] nums2)
+        {
+
         }
 
         #endregion

@@ -48,6 +48,7 @@
     <Compile Include="OutClass\MinStack-155.cs" />
     <Compile Include="OutClass\MyQueue-232.cs" />
     <Compile Include="OutClass\MyStack-225.cs" />
+    <Compile Include="OutClass\NumArray-303.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
