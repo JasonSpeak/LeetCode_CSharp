@@ -13,7 +13,7 @@ namespace LeetCodeCS
     {
         public static void Main(string[] args)
         {
-            int a = (int)Math.Pow(4, 15);
+            var a = FirstUniqChar("loveleetcode");
             Console.WriteLine(a);
 
             Console.ReadLine();
@@ -1583,7 +1583,142 @@ namespace LeetCodeCS
 
         public static int[] Intersection(int[] nums1, int[] nums2)
         {
+            var set1 = new HashSet<int>();
+            var set2 = new HashSet<int>();
+            foreach (var i in nums1)
+            {
+                set1.Add(i);
+            }
 
+            foreach (var i in nums2)
+            {
+                set2.Add(i);
+            }
+            set1.IntersectWith(set2);
+
+            int[] res = new int[set1.Count];
+            int index = 0;
+            foreach (var i in set1)
+            {
+                res[index] = i;
+                index++;
+            }
+
+            return res;
+        }
+
+
+        #endregion
+
+        #region LeetCodeCN-367
+
+        public static bool IsPerfectSquare(int num)
+        {
+            if (num < 2)
+            {
+                return true;
+            }
+
+            long left = 2, right = num / 2, x, guessSquared;
+            while (left <= right)
+            {
+                x = left + (right - left) / 2;
+                guessSquared = x * x;
+                if (guessSquared == num)
+                {
+                    return true;
+                }
+                if (guessSquared > num)
+                {
+                    right = x - 1;
+                }
+                else
+                {
+                    left = x + 1;
+                }
+            }
+            return false;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-371
+
+        public static int GetSum(int a, int b)
+        {
+            while (b != 0)
+            {
+                int temp = a ^ b;
+                b = (a & b) << 1;
+                a = temp;
+            }
+            return a;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-383
+
+        public static bool CanConstruct(string ransomNote, string magazine)
+        {
+            if (ransomNote.Length > magazine.Length)
+            {
+                return false;
+            }
+            int[] table = new int[26];
+
+            foreach (var c in magazine)
+            {
+                table[c - 'a']++;
+            }
+
+            foreach (var c in ransomNote)
+            {
+                table[c - 'a']--;
+            }
+
+            if (table.Any(i => i < 0))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-387
+
+        public static int FirstUniqChar(string s)
+        {
+            int[] flag = new int[26];
+            foreach (var c in s)
+            {
+                flag[c - 'a']++;
+            }
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (flag[s[i] - 'a'] == 1)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-389
+
+        public static char FindTheDifference(string s, string t)
+        {
+            int[] flag = new int[26];
+            foreach (var c in s)
+            {
+                
+            }
         }
 
         #endregion
