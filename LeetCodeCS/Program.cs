@@ -13,7 +13,7 @@ namespace LeetCodeCS
     {
         public static void Main(string[] args)
         {
-            var a = FirstUniqChar("loveleetcode");
+            var a = AddStrings("11", "12");
             Console.WriteLine(a);
 
             Console.ReadLine();
@@ -1852,6 +1852,211 @@ namespace LeetCodeCS
 
             sum += SumOfLeftLeaves(root.right);
             return sum;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-405
+
+        //Pass
+
+        #endregion
+
+        #region LeetCodeCN-409
+
+        public static int LongestPalindrome(string s)
+        {
+            var kv = new Hashtable();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (kv.ContainsKey(s[i]))
+                {
+                    kv[s[i]] = (int) kv[s[i]] + 1;
+                }
+                else
+                {
+                    kv.Add(s[i],1);
+                }
+            }
+
+            int maxLength = 0;
+            foreach (DictionaryEntry entry in kv)
+            {
+                if ((int) entry.Value >= 2)
+                {
+                    maxLength += (int) entry.Value / 2 * 2;
+                }
+            }
+
+            return maxLength==s.Length ? maxLength : maxLength + 1;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-412
+
+        public static IList<string> FizzBuzz(int n)
+        {
+            var result = new List<string>();
+            for (int i = 1; i <= n; i++)
+            {
+                if (i % 3 == 0 && i % 5 == 0)
+                {
+                    result.Add("FizzBuzz");
+                    continue;
+                }
+
+                if (i % 5 == 0)
+                {
+                    result.Add("Buzz");
+                    continue;
+                }
+
+                if (i % 3 == 0)
+                {
+                    result.Add("Fizz");
+                    continue;
+                }
+                result.Add(i.ToString());
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-414
+
+        public static int ThirdMax(int[] nums)
+        {
+            int max1 = int.MinValue, max2 = int.MinValue, max3 = int.MinValue, n = nums.Length, cnt = 0;
+            for (int i = 0; i < n; i++)
+            {
+                max1 = Math.Max(max1, nums[i]);
+            }
+            for (int i = 0; i < n; i++)
+            {
+                if (nums[i] != max1) max2 = Math.Max(max2, nums[i]);
+            }
+            for (int i = 0; i < n; i++)
+            {
+                if (nums[i] != max1 && nums[i] != max2)
+                {
+                    if (nums[i] >= max3)
+                    {
+                        max3 = nums[i];
+                        cnt++;
+                    }
+                }
+            }
+            return (cnt == 0) ? max1 : max3;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-415
+
+        public static string AddStrings(string num1, string num2)
+        {
+            int point1 = num1.Length - 1;
+            int point2 = num2.Length - 1;
+            var result = string.Empty;
+            int addNum = 0;
+            while (point1>=0&&point2>=0)
+            {
+                var cNum1 = num1[point1] - '0';
+                var cNum2 = num2[point2] - '0';
+                var tmpRes = cNum1 + cNum2 + addNum;
+                if (tmpRes > 9)
+                {
+                    addNum = 1;
+                    tmpRes = tmpRes % 10;
+                }
+                else
+                {
+                    addNum = 0;
+                }
+
+                result += tmpRes;
+                point1--;
+                point2--;
+            }
+
+            if (point1 < 0 && point2>=0)
+            {
+                for (int i = point2; i >=0; i--)
+                {
+                    var tmpRes = num2[i] - '0' + addNum;
+                    if (tmpRes > 9)
+                    {
+                        addNum = 1;
+                        tmpRes = tmpRes % 10;
+                    }
+                    else
+                    {
+                        addNum = 0;
+                    }
+                    result += tmpRes;
+                }
+            }
+
+            if (point1 >= 0 && point2 < 0)
+            {
+                for (int i = point1; i >= 0; i--)
+                {
+                    var tmpRes = num1[i] - '0' + addNum;
+                    if (tmpRes > 9)
+                    {
+                        addNum = 1;
+                        tmpRes = tmpRes % 10;
+                    }
+                    else
+                    {
+                        addNum = 0;
+                    }
+                    result += tmpRes;
+                }
+            }
+
+            if (addNum == 1)
+            {
+                result += 1;
+            }
+
+            return new string(result.Reverse().ToArray());
+
+        }
+
+        #endregion
+
+        #region LeetCodeCN-434
+
+        public static int CountSegments(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                return 0;
+            }
+
+            int count = 0;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if ((i == 0 || s[i - 1] == ' ') && s[i] != ' ')
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-437
+
+        public static int PathSum(TreeNode root, int sum)
+        {
+
         }
 
         #endregion
