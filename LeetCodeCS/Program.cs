@@ -1717,8 +1717,141 @@ namespace LeetCodeCS
             int[] flag = new int[26];
             foreach (var c in s)
             {
-                
+                flag[c - 'a']++;
             }
+
+            foreach (var c in t)
+            {
+                flag[c - 'a']--;
+            }
+
+            for (int i = 0; i < 26; i++)
+            {
+                if (flag[i] < 0)
+                {
+                    return (char)('a' + i);
+                }
+            }
+
+            return 'a';
+        }
+
+        #endregion
+
+        #region LeetCodeCN-392
+
+        public static bool IsSubsequence(string s, string t)
+        {
+            int s_index = 0, t_index = 0;
+            while (s_index < s.Length && t_index < t.Length)
+            {
+                if (s[s_index] == t[t_index])
+                {
+                    s_index++;
+                    t_index++;
+                }
+                else
+                {
+                    t_index++;
+                }
+            }
+
+            return s_index == s.Length;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-401
+
+        public static IList<string> ReadBinaryWatch(int num)
+        {
+            var dictA = new Dictionary<int, List<int>>();
+            var res = new List<string>();
+            for (var i = 0; i < 12; i++)
+            {
+                var t = BitCount(i);
+                if (dictA.ContainsKey(t))
+                {
+                    dictA[t].Add(i);
+                }
+                else
+                {
+                    dictA[t] = new List<int> { i };
+                }
+            }
+
+            var dictB = new Dictionary<int, List<int>>();
+            for (var i = 0; i < 60; i++)
+            {
+                var t = BitCount(i);
+                if (dictB.ContainsKey(t))
+                {
+                    dictB[t].Add(i);
+                }
+                else
+                {
+                    dictB[t] = new List<int> { i };
+                }
+            }
+            for (var i = 0; i <= 4 && dictA.ContainsKey(i); i++)
+            {
+                var j = num - i;
+                if (j >= 0 && dictB.ContainsKey(j))
+                {
+                    foreach (var a in dictA[i])
+                    {
+                        foreach (var b in dictB[j])
+                        {
+                            if (b < 10)
+                            {
+                                res.Add($"{a}:0{b}");
+                            }
+                            else
+                            {
+                                res.Add($"{a}:{b}");
+                            }
+                        }
+                    }
+
+                }
+            }
+            return res;
+        }
+
+
+        static int BitCount(int n)
+        {
+            var count = 0;
+            while (n > 0)
+            {
+                n &= (n - 1);
+                count++;
+            }
+            return count;
+        }
+        #endregion
+
+        #region LeetCodeCN-404
+
+        public static int SumOfLeftLeaves(TreeNode root)
+        {
+            if (root == null)
+            {
+                return 0;
+            }
+
+            int sum = 0;
+            if (root.left != null && (root.left.left == null && root.left.right == null))
+            {
+                sum += root.left.val;
+            }
+            else
+            {
+                sum += SumOfLeftLeaves(root.left);
+            }
+
+            sum += SumOfLeftLeaves(root.right);
+            return sum;
         }
 
         #endregion
