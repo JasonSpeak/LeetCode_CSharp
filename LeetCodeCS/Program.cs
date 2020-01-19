@@ -13,7 +13,7 @@ namespace LeetCodeCS
     {
         public static void Main(string[] args)
         {
-            var a = AddStrings("11", "12");
+            var a = HammingDistance(1, 4);
             Console.WriteLine(a);
 
             Console.ReadLine();
@@ -1818,17 +1818,6 @@ namespace LeetCodeCS
             return res;
         }
 
-
-        static int BitCount(int n)
-        {
-            var count = 0;
-            while (n > 0)
-            {
-                n &= (n - 1);
-                count++;
-            }
-            return count;
-        }
         #endregion
 
         #region LeetCodeCN-404
@@ -2056,6 +2045,303 @@ namespace LeetCodeCS
 
         public static int PathSum(TreeNode root, int sum)
         {
+            return GetPathSum(root, sum, new int[1000], 0);
+        }
+
+        /// <summary>
+        /// 递归获取每条路径上的列表存入array，并在每次递归中，从后向前循环array的和寻找是否存在和为sum的组合，p为当前递归深度，即array列表的元素数量
+        /// </summary>
+        /// <param name="root">当前递归节点</param>
+        /// <param name="sum">寻找的和 </param>
+        /// <param name="array">存储树上的路径</param>
+        /// <param name="p">递归深度</param>
+        /// <returns>和为sum的路径数量</returns>
+        private static int GetPathSum(TreeNode root, int sum, int[] array, int p)
+        {
+            if (root == null)
+            {
+                return 0;
+            }
+
+            array[p] = root.val;
+            int tmp = 0;
+            int n = 0;
+            for (int i = p; i >=0 ; i--)
+            {
+                tmp += array[i];
+                if (tmp == sum)
+                {
+                    n++;
+                }
+            }
+
+            int left = GetPathSum(root.left, sum, array, p + 1);
+            int right = GetPathSum(root.right, sum, array, p + 1);
+            return n + left + right;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-441
+
+        public static int ArrangeCoins(int n)
+        {
+            #region 暴力循环一路加上去（超时）
+
+            //if (n == 0)
+            //{
+            //    return 0;
+            //}
+            //int sum = 0;
+            //int level = 1;
+            //while (sum < n)
+            //{
+            //    sum += level;
+            //    level++;
+            //}
+
+            //return sum == n ? level - 1 : level - 2;
+
+            #endregion
+
+            #region 利用公式计算
+            //求和公式k(k+1) /2 = n，则正数解 k = sqrt(2n+1/4) - 1/2
+
+            return (int)(Math.Sqrt(2) * Math.Sqrt(n + 0.125) - 0.5);
+
+            #endregion
+
+        }
+
+        #endregion
+
+        #region LeetCodeCN-443
+
+        /// <summary>
+        /// 三个指针，遍历读写
+        /// </summary>
+        /// <param name="chars"></param>
+        /// <returns></returns>
+        public static int Compress(char[] chars)
+        {
+            int anchor = 0, write = 0;
+            for (int read = 0; read < chars.Length; read++)
+            {
+                if (read + 1 == chars.Length || chars[read + 1] != chars[read])
+                {
+                    chars[write] = chars[anchor];
+                    write++;
+                    if (read > anchor)
+                    {
+                        foreach(char c in (read-anchor+1).ToString())
+                        {
+                            chars[write] = c;
+                            write++;
+                        }
+                    }
+
+                    anchor = read + 1;
+                }
+
+            }
+
+            return write;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-447
+
+        public static int NumberOfBoomerangs(int[][] points)
+        {
+            var kv = new Hashtable();
+            int result = 0;
+            for (int i = 0; i < points.Length; i++)
+            {
+                kv.Clear();
+                for (int j = 0; j < points.Length; j++)
+                {
+                    if (i == j)
+                    {
+                        continue;
+                    }
+
+                    int distance = (points[i][0] - points[j][0]) * (points[i][0] - points[j][0]) +
+                                   (points[i][1] - points[j][1]) * (points[i][1] - points[j][1]);
+
+                    if (kv.ContainsKey(distance))
+                    {
+                        result += (int) kv[distance] * 2;
+                        kv[distance] = (int) kv[distance] + 1;
+                    }
+                    else
+                    {
+                        kv.Add(distance,1);
+                    }
+                }
+            }
+
+            return result;
+
+        }
+
+        #endregion
+
+        #region LeetCodeCN-448
+
+        public static IList<int> FindDisappearedNumbers(int[] nums)
+        {
+
+            #region 空间复杂度O(1) 时间复杂度O(n)
+            //for (int i = 0; i < nums.Length; i++)
+            //{
+            //    int newIndex = Math.Abs(nums[i])-1;
+            //    if (nums[newIndex] > 0)
+            //    {
+            //        nums[newIndex] *= -1;
+            //    }
+            //}
+
+            //IList<int> res = new List<int>();
+
+            //for (int i = 1; i <= nums.Length; i++)
+            //{
+            //    if (nums[i - 1] > 0)
+            //    {
+            //        res.Add(i);
+            //    }
+            //}
+
+            //return res;
+            #endregion
+
+            #region 空间复杂度O(n)时间复杂度O(n)
+
+            var kv = new Hashtable();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if(!kv.ContainsKey(nums[i]))
+                    kv.Add(nums[i],true);
+            }
+
+            IList<int> res = new List<int>();
+
+            for (int i = 1; i <= nums.Length; i++)
+            {
+                if (!kv.ContainsKey(i))
+                {
+                    res.Add(i);
+                }
+            }
+
+            return res;
+
+            #endregion
+        }
+
+        #endregion
+
+        #region LeetCodeCN-453(数学规律题，无意义)
+
+        public static int MinMoves(int[] nums)
+        {
+            int moves = 0, min = int.MaxValue;
+            foreach (var t in nums)
+            {
+                min = Math.Min(min, t);
+            }
+            foreach (var t in nums)
+            {
+                moves += t - min;
+            }
+            return moves;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-455
+
+        /// <summary>
+        /// 贪心算法，先对两个数组排序，然后从小到大依次比较满足
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static int FindContentChildren(int[] g, int[] s)
+        {
+            if (g.Length == 0 || s.Length == 0)
+                return 0;
+            Array.Sort(g);
+            Array.Sort(s);
+
+            int gIndex = 0, sIndex = 0;
+            while (gIndex < g.Length && sIndex < s.Length)
+            {
+                if (g[gIndex] <= s[sIndex])
+                {
+                    gIndex++;
+                }
+
+                sIndex++;
+            }
+
+            return gIndex;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-459
+        //https://leetcode-cn.com/problems/repeated-substring-pattern/solution/guan-yu-gou-zao-ssjin-xing-pan-duan-de-zheng-ming-/
+        public static bool RepeatedSubstringPattern(string s)
+        {
+            var str = s + s;
+            return str.Substring(1, str.Length - 2).Contains(s); 
+        }
+
+        #endregion
+
+        #region LeetCodeCN-461
+
+        public static int HammingDistance(int x, int y)
+        {
+            return BitCount(x ^ y);
+        }
+
+
+        private static int BitCount(int i)
+        {
+            int count = 0;
+            while (i != 0)
+            {
+                count++;
+                i = (i - 1) & i;
+            }
+            return count;
+        }
+        #endregion
+
+        #region LeetCodeCN-463
+        //https://leetcode-cn.com/problems/island-perimeter/solution/chang-gui-jie-fa-javashi-xian-by-lyl0724-2/
+        public static int IslandPerimeter(int[][] grid)
+        {
+            int sum = 0;
+            for (int i = 0; i < grid.Length; i++)
+            {
+                for (int j = 0; j < grid[0].Length; j++)
+                {
+                    if (grid[i][j] == 1)
+                    {
+                        int lines = 4;
+                        //判断这个岛旁边连接了多少个岛
+                        if (i > 0 && grid[i - 1][j] == 1) lines--;
+                        if (i < grid.Length - 1 && grid[i + 1][j] == 1) lines--;
+                        if (j > 0 && grid[i][j - 1] == 1) lines--;
+                        if (j < grid[0].Length - 1 && grid[i][j + 1] == 1) lines--;
+                        sum += lines;
+                    }
+                }
+            }
+            return sum;
 
         }
 
