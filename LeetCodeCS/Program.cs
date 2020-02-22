@@ -13,8 +13,13 @@ namespace LeetCodeCS
     {
         public static void Main(string[] args)
         {
-            var a = HammingDistance(1, 4);
-            Console.WriteLine(a);
+            int[] nums = { 1 };
+            var a = ConstructRectangle(5);
+
+            foreach (var item in a)
+            {
+                Console.WriteLine(item);
+            }
 
             Console.ReadLine();
         }
@@ -2344,6 +2349,241 @@ namespace LeetCodeCS
             return sum;
 
         }
+
+        #endregion
+
+        #region LeetCodeCN-475
+
+        public static int FindRadius(int[] houses, int[] heaters)
+        {
+            Hashtable heaterstable = new Hashtable();
+            int result_max = 0;
+            foreach (var heater in heaters)
+            {
+                if (heaterstable.ContainsKey(heater))
+                    continue;
+                heaterstable.Add(heater, heater);
+            }
+            for (int i = 0; i < houses.Length; i++)
+            {
+                if (heaterstable.ContainsKey(houses[i]))
+                    continue;
+
+                int temp_min = int.MaxValue;
+                for (int j = 0; j < heaters.Length; j++)
+                {
+                    int abs = houses[i] > heaters[j] ? houses[i] - heaters[j] : heaters[j] - houses[i];
+                    if (abs < temp_min)
+                        temp_min = abs;
+                }
+
+                if (temp_min > result_max)
+                    result_max = temp_min;
+            }
+
+            return result_max;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-476
+
+        public static int FindComplement(int num)
+        {
+            int tmp = 1;
+            while (tmp < num)
+            {
+                tmp <<= 1;
+                tmp += 1;
+            }
+            return (tmp ^ num);
+        }
+
+        #endregion
+
+        #region LeetCodeCN-482
+
+        public static string LicenseKeyFormatting(string S, int K)
+        {
+            S = S.ToUpper().Replace("-","");
+            List<string> resultList = new List<string>();
+            string result = string.Empty;
+            string blockString = string.Empty;
+            int blockCount = 0;
+            for (int i = S.Length-1;i>=0; i--)
+            {
+                blockString += S[i];
+                blockCount++;
+                if (i == 0)
+                {
+                    string reverseString = string.Empty;
+                    for (int j = blockString.Length - 1; j >= 0; j--)
+                    {
+                        reverseString += blockString[j];
+                    }
+                    resultList.Add(reverseString);
+                    blockString = string.Empty;
+                    continue;
+                }
+                if (blockCount%K==0)
+                {
+                    string reverseString = string.Empty;
+                    for (int j = K-1; j >= 0; j--)
+                    {
+                        reverseString += blockString[j];
+                    }
+                    resultList.Add(reverseString);
+                    blockString = string.Empty;
+                }
+              
+            }
+
+            for (int i = resultList.Count-1; i >=0 ; i--)
+            {
+                if(i==resultList.Count-1)
+                {
+                    result += resultList[i];
+                }
+                else
+                {
+                    result = result + "-" + resultList[i];
+                }
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-485
+
+        public static int FindMaxConsecutiveOnes(int[] nums)
+        {
+            int maxOnes = 0;
+            int tempMaxOnes = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] == 1)
+                {
+                    tempMaxOnes++;
+                }
+                if (nums[i] == 0 || i == nums.Length - 1)
+                {
+                    if (tempMaxOnes > maxOnes)
+                        maxOnes = tempMaxOnes;
+                    tempMaxOnes = 0;
+                }
+            }
+            return maxOnes;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-492
+
+        public static int[] ConstructRectangle(int area)
+        {
+            int[] result = new int[2];
+            int sqrt = (int)Math.Sqrt(area);
+            if(sqrt*sqrt<area)
+            {
+                sqrt++;
+            }
+            for (int i = sqrt; i <= area; i++)
+            {
+                if(area%i==0)
+                {
+                    result[0] = i;
+                    result[1] = area/i;
+                    break;
+                }
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-496
+
+        public static int[] NextGreaterElement(int[] nums1, int[] nums2)
+        {
+            int[] result = new int[nums1.Length];
+            Hashtable nums2Table = new Hashtable();
+            for (int i = 0; i < nums2.Length; i++)
+            {
+                nums2Table.Add(nums2[i], i);
+            }
+
+            for (int i = 0; i < nums1.Length; i++)
+            {
+                int i_result = -1;
+                int i_index = (int)nums2Table[nums1[i]];
+                for (int j = i_index+1; j < nums2.Length; j++)
+                {
+                    if(nums2[j]>nums1[i])
+                    {
+                        i_result = nums2[j];
+                        break;
+                    }
+                }
+                result[i] = i_result;
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region LeetCodeCN-500
+
+        public static string[] FindWords(string[] words)
+        {
+            Hashtable kv = new Hashtable();
+            string firstLine = "qwertyuiop";
+            string secondLine = "asdfghjkl";
+            string thirdLine = "zxcvbnm";
+            foreach (var item in firstLine)
+            {
+                kv.Add(item, 1);
+            }
+            foreach (var item in secondLine)
+            {
+                kv.Add(item, 2);
+            }
+            foreach (var item in thirdLine)
+            {
+                kv.Add(item, 3);
+            }
+
+            List<string> result = new List<string>();
+
+            foreach (var word in words)
+            {
+                string tempWord = word.ToLower();
+                int defaultLevel = (int)kv[tempWord[0]];
+                for (int i = 0; i < tempWord.Length; i++)
+                {
+                    if((int)kv[tempWord[i]]!=defaultLevel)
+                    {
+                        break;
+                    }
+                    if(i==tempWord.Length-1)
+                    {
+                        result.Add(word);
+                    }
+                }
+            }
+
+            return result.ToArray();
+
+        }
+
+
+
+        #endregion
+
+        #region LeetCodeCN-1352
+
+        //OutClass
 
         #endregion
     }

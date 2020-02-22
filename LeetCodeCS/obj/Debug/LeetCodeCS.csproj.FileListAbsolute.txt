@@ -11,3 +11,9 @@ D:\Google云盘\LeetCodeDiary\LeetCode_CSharp\LeetCodeCS\bin\Debug\LeetCodeCS.pd
 D:\Google云盘\LeetCodeDiary\LeetCode_CSharp\LeetCodeCS\obj\Debug\LeetCodeCS.csprojAssemblyReference.cache
 D:\Google云盘\LeetCodeDiary\LeetCode_CSharp\LeetCodeCS\obj\Debug\LeetCodeCS.exe
 D:\Google云盘\LeetCodeDiary\LeetCode_CSharp\LeetCodeCS\obj\Debug\LeetCodeCS.pdb
+C:\Users\willam\Desktop\MyRepos\LeetCode_CSharp\LeetCodeCS\bin\Debug\LeetCodeCS.exe.config
+C:\Users\willam\Desktop\MyRepos\LeetCode_CSharp\LeetCodeCS\bin\Debug\LeetCodeCS.exe
+C:\Users\willam\Desktop\MyRepos\LeetCode_CSharp\LeetCodeCS\bin\Debug\LeetCodeCS.pdb
+C:\Users\willam\Desktop\MyRepos\LeetCode_CSharp\LeetCodeCS\obj\Debug\LeetCodeCS.csprojAssemblyReference.cache
+C:\Users\willam\Desktop\MyRepos\LeetCode_CSharp\LeetCodeCS\obj\Debug\LeetCodeCS.exe
+C:\Users\willam\Desktop\MyRepos\LeetCode_CSharp\LeetCodeCS\obj\Debug\LeetCodeCS.pdb
